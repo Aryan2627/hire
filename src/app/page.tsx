@@ -94,7 +94,7 @@ export default function LoginPage() {
         </form>
         
         <div className="mt-6 text-center text-xs text-slate-600">
-          SECURE ENCRYPTED CHANNEL • ISO 27001
+          SECURE ENCRYPTED CHANNEL
         </div>
       </div>
     </div>
