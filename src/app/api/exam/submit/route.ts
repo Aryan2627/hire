@@ -26,10 +26,12 @@ export async function POST(request: Request) {
     });
   });
 
+  const finalStatus = data.status || 'COMPLETED';
+
   await prisma.candidateResponse.update({
     where: { email },
     data: {
-      status: 'COMPLETED',
+      status: finalStatus,
       logicalScore,
       quantScore,
       answers: JSON.stringify(answers),

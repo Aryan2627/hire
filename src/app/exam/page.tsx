@@ -1,7 +1,7 @@
 'use client';
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useCallback, useRef } from 'react';
 import { useRouter } from 'next/navigation';
-import { Clock, Shield, CheckCircle2, ChevronRight, Send, AlertTriangle } from 'lucide-react';
+import { Clock, Shield, CheckCircle2, ChevronRight, Send, AlertTriangle, AlertOctagon, Code2 } from 'lucide-react';
 import questionsDb from '@/questions.json';
 
 export default function ExamPage() {
@@ -13,6 +13,15 @@ export default function ExamPage() {
   const [currentSectionIdx, setCurrentSectionIdx] = useState(0);
   const [answers, setAnswers] = useState<Record<string, string>>({});
   const [timeLeft, setTimeLeft] = useState<number>(40 * 60);
+  const [warnings, setWarnings] = useState(0);
+
+  const answersRef = useRef(answers);
+  const currentSectionIdxRef = useRef(currentSectionIdx);
+  
+  useEffect(() => {
+    answersRef.current = answers;
+    currentSectionIdxRef.current = currentSectionIdx;
+  }, [answers, currentSectionIdx]);
 
   const handleNextSection = useCallback(async () => {
     if (submitting) return;
@@ -45,6 +54,16 @@ export default function ExamPage() {
     }
   }, [submitting, currentSectionIdx, answers]);
 
+  const suspendTest = useCallback(async () => {
+    setSubmitting(true);
+    await fetch('/api/exam/submit', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ answers: answersRef.current, currentSectionIndex: currentSectionIdxRef.current, status: 'SUSPENDED' })
+    });
+    window.location.reload();
+  }, []);
+
   useEffect(() => {
     fetch('/api/exam/status')
       .then(async (r) => {
@@ -68,7 +87,28 @@ export default function ExamPage() {
   }, []);
 
   useEffect(() => {
-    if (loading || !!errorMsg || statusData?.status === 'COMPLETED') return;
+    if (loading || !!errorMsg || statusData?.status === 'COMPLETED' || statusData?.status === 'SUSPENDED') return;
+    
+    const handleVisibilityChange = () => {
+      if (document.hidden) {
+        setWarnings(prev => {
+          const newWarnings = prev + 1;
+          if (newWarnings >= 3) {
+            suspendTest();
+          } else {
+            alert(`WARNING: You have switched windows! This is a strict violation. (${newWarnings}/3 warnings). The test will be suspended on your third warning.`);
+          }
+          return newWarnings;
+        });
+      }
+    };
+
+    document.addEventListener('visibilitychange', handleVisibilityChange);
+    return () => document.removeEventListener('visibilitychange', handleVisibilityChange);
+  }, [loading, errorMsg, statusData?.status, suspendTest]);
+
+  useEffect(() => {
+    if (loading || !!errorMsg || statusData?.status === 'COMPLETED' || statusData?.status === 'SUSPENDED') return;
     
     const interval = setInterval(() => {
       setTimeLeft((prev) => {
@@ -99,7 +139,19 @@ export default function ExamPage() {
           <AlertTriangle className="w-16 h-16 text-red-500 mx-auto mb-4" />
           <h2 className="text-xl font-bold text-white mb-2">System Error</h2>
           <p className="text-red-400 mb-6 font-sans text-sm">{errorMsg}</p>
-          <div className="text-xs text-red-500 font-mono">Check if Vercel DATABASE_URL is configured correctly.</div>
+        </div>
+      </div>
+    );
+  }
+
+  if (statusData?.status === 'SUSPENDED') {
+    return (
+      <div className="flex-1 flex items-center justify-center p-6">
+        <div className="max-w-md w-full border border-red-900/50 bg-red-950/20 backdrop-blur-md p-8 rounded-2xl text-center shadow-[0_0_30px_rgba(239,68,68,0.1)]">
+          <AlertOctagon className="w-16 h-16 text-red-500 mx-auto mb-4" />
+          <h2 className="text-2xl font-bold text-white mb-2">Test Suspended</h2>
+          <p className="text-red-400 mb-6 font-sans">Your session has been securely terminated due to multiple window switching violations. This incident has been logged.</p>
+          <div className="text-xs text-red-500 font-mono">STATUS: 403 FORBIDDEN | SESSION TERMINATED</div>
         </div>
       </div>
     );
@@ -151,6 +203,13 @@ export default function ExamPage() {
 
       <main className="flex-1 overflow-y-auto p-4 sm:p-8">
         <div className="max-w-4xl mx-auto">
+          {warnings > 0 && (
+             <div className="bg-red-950/50 border border-red-900/50 text-red-400 p-3 rounded-lg text-sm mb-6 flex items-center gap-3 font-sans">
+               <AlertTriangle className="w-5 h-5 flex-shrink-0" />
+               <div><strong>Warning:</strong> You have switched windows {warnings}/3 times. Your test will be suspended upon reaching 3 violations.</div>
+             </div>
+          )}
+
           <div className="mb-8 border-b border-slate-800 pb-4">
             <h1 className="text-3xl font-bold text-white mb-2">{currentSection.title}</h1>
             <p className="text-slate-400 font-sans text-sm">Attempt all questions. You can skip this section or submit early to proceed.</p>
@@ -166,7 +225,21 @@ export default function ExamPage() {
                   <div className="flex-1">
                     <p className="text-slate-200 font-sans text-base leading-relaxed mb-5 font-medium">{q.text}</p>
                     
-                    {q.type === 'textarea' ? (
+                    {q.type === 'code_editor' ? (
+                      <div className="rounded-xl overflow-hidden border border-slate-700 shadow-inner">
+                        <div className="bg-slate-800/80 text-slate-300 text-xs px-4 py-2 font-mono flex items-center gap-2 border-b border-slate-700">
+                          <Code2 className="w-4 h-4 text-cyan-500" />
+                          {q.language?.toUpperCase() || 'CODE'}
+                        </div>
+                        <textarea
+                          value={answers[q.id] || ''}
+                          onChange={(e) => handleOptionSelect(q.id, e.target.value)}
+                          className="w-full h-64 bg-[#0d1117] text-green-400 p-4 focus:outline-none focus:bg-[#0a0d12] transition-colors font-mono text-sm resize-y"
+                          placeholder={`// Write your ${q.language} code here...`}
+                          spellCheck="false"
+                        ></textarea>
+                      </div>
+                    ) : q.type === 'textarea' ? (
                       <textarea
                         value={answers[q.id] || ''}
                         onChange={(e) => handleOptionSelect(q.id, e.target.value)}

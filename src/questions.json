@@ -46,10 +46,12 @@
     },
     {
       "id": "aiml",
-      "title": "AI/ML Deployment Project",
+      "title": "Real-time AI/ML Deployment Lab",
       "durationMinutes": 40,
       "questions": [
-        { "id": "aiml1", "text": "You are tasked with deploying a fine-tuned Large Language Model (LLM) into a production environment where latency and cost are major constraints. The model will handle thousands of concurrent requests. Describe the architecture you would use, including inference optimization techniques (like quantization, vLLM, TensorRT), load balancing, and autoscaling strategies. Briefly write a mock Python API (using FastAPI) demonstrating how you would handle an incoming inference request and return the stream.", "type": "textarea" }
+        { "id": "aiml_api", "text": "1. Write the Python API script (e.g. FastAPI/Flask) to load and serve a highly concurrent vLLM model. Include your server configuration and inference endpoints.", "type": "code_editor", "language": "python" },
+        { "id": "aiml_docker", "text": "2. Provide a multi-stage Dockerfile that optimizes this container for production GPU inference, keeping the image size strictly minimized.", "type": "code_editor", "language": "dockerfile" },
+        { "id": "aiml_k8s", "text": "3. Write the Kubernetes (K8s) deployment YAML. You must configure resource limits for Nvidia GPUs, node affinity, and an autoscaler configuration.", "type": "code_editor", "language": "yaml" }
       ]
     }
   ]
