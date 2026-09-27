@@ -1,13 +1,14 @@
 'use client';
 import { useState, useEffect, useCallback } from 'react';
 import { useRouter } from 'next/navigation';
-import { Clock, Shield, CheckCircle2, ChevronRight, Send } from 'lucide-react';
+import { Clock, Shield, CheckCircle2, ChevronRight, Send, AlertTriangle } from 'lucide-react';
 import questionsDb from '@/questions.json';
 
 export default function ExamPage() {
   const router = useRouter();
   const [statusData, setStatusData] = useState<any>(null);
   const [loading, setLoading] = useState(true);
+  const [errorMsg, setErrorMsg] = useState<string | null>(null);
   const [submitting, setSubmitting] = useState(false);
   const [currentSectionIdx, setCurrentSectionIdx] = useState(0);
   const [answers, setAnswers] = useState<Record<string, string>>({});
@@ -45,22 +46,29 @@ export default function ExamPage() {
   }, [submitting, currentSectionIdx, answers]);
 
   useEffect(() => {
-    fetch('/api/exam/status').then(r => r.json()).then(d => {
-      if (d.error) {
-        router.push('/');
-        return;
-      }
-      setStatusData(d);
-      setCurrentSectionIdx(d.currentSectionIndex || 0);
-      setAnswers(d.answers || {});
-      setLoading(false);
-    }).catch(() => {
-      router.push('/');
-    });
-  }, [router]);
+    fetch('/api/exam/status')
+      .then(async (r) => {
+        const d = await r.json();
+        if (!r.ok || d.error) {
+          throw new Error(d.error || 'Server error occurred while fetching status.');
+        }
+        return d;
+      })
+      .then(d => {
+        setStatusData(d);
+        setCurrentSectionIdx(d.currentSectionIndex || 0);
+        setAnswers(d.answers || {});
+        setLoading(false);
+      })
+      .catch((err) => {
+        console.error(err);
+        setErrorMsg(err.message);
+        setLoading(false);
+      });
+  }, []);
 
   useEffect(() => {
-    if (loading || statusData?.status === 'COMPLETED') return;
+    if (loading || !!errorMsg || statusData?.status === 'COMPLETED') return;
     
     const interval = setInterval(() => {
       setTimeLeft((prev) => {
@@ -74,7 +82,7 @@ export default function ExamPage() {
     }, 1000);
     
     return () => clearInterval(interval);
-  }, [loading, statusData?.status, handleNextSection]);
+  }, [loading, errorMsg, statusData?.status, handleNextSection]);
 
   const handleOptionSelect = (qId: string, val: string) => {
     setAnswers(prev => ({ ...prev, [qId]: val }));
@@ -82,6 +90,19 @@ export default function ExamPage() {
 
   if (loading) {
     return <div className="flex-1 flex items-center justify-center"><div className="animate-pulse text-cyan-500 font-bold">ESTABLISHING SECURE CONNECTION...</div></div>;
+  }
+
+  if (errorMsg) {
+    return (
+      <div className="flex-1 flex items-center justify-center p-6">
+        <div className="max-w-md w-full border border-red-900/50 bg-red-950/20 backdrop-blur-md p-8 rounded-2xl text-center shadow-[0_0_30px_rgba(239,68,68,0.1)]">
+          <AlertTriangle className="w-16 h-16 text-red-500 mx-auto mb-4" />
+          <h2 className="text-xl font-bold text-white mb-2">System Error</h2>
+          <p className="text-red-400 mb-6 font-sans text-sm">{errorMsg}</p>
+          <div className="text-xs text-red-500 font-mono">Check if Vercel DATABASE_URL is configured correctly.</div>
+        </div>
+      </div>
+    );
   }
 
   if (statusData?.status === 'COMPLETED') {
