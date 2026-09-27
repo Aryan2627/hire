@@ -1,7 +1,10 @@
 import fs from 'fs';
 import path from 'path';
 
-const dbPath = path.join(process.cwd(), 'responses.json');
+// Use /tmp for Vercel Serverless environments
+const dbPath = process.env.NODE_ENV === 'production' 
+  ? '/tmp/responses.json' 
+  : path.join(process.cwd(), 'responses.json');
 
 export function getDb() {
   if (!fs.existsSync(dbPath)) {

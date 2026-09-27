@@ -1,7 +1,7 @@
 'use client';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { useRouter } from 'next/navigation';
-import { Clock, Shield, CheckCircle2, ChevronRight, AlertTriangle, Send } from 'lucide-react';
+import { Clock, Shield, CheckCircle2, ChevronRight, Send } from 'lucide-react';
 import questionsDb from '@/questions.json';
 
 export default function ExamPage() {
@@ -11,9 +11,38 @@ export default function ExamPage() {
   const [submitting, setSubmitting] = useState(false);
   const [currentSectionIdx, setCurrentSectionIdx] = useState(0);
   const [answers, setAnswers] = useState<Record<string, string>>({});
-  
-  // Timer state
-  const [timeLeft, setTimeLeft] = useState<number>(40 * 60); // Default 40 min in seconds
+  const [timeLeft, setTimeLeft] = useState<number>(40 * 60);
+
+  const handleNextSection = useCallback(async () => {
+    if (submitting) return;
+    setSubmitting(true);
+    
+    const isLastSection = currentSectionIdx >= questionsDb.sections.length - 1;
+    
+    const payload = {
+      answers,
+      currentSectionIndex: isLastSection ? currentSectionIdx : currentSectionIdx + 1
+    };
+
+    if (isLastSection) {
+      await fetch('/api/exam/submit', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload)
+      });
+      window.location.reload();
+    } else {
+      await fetch('/api/exam/status', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload)
+      });
+      setCurrentSectionIdx(prev => prev + 1);
+      setTimeLeft(40 * 60);
+      setSubmitting(false);
+      window.scrollTo(0, 0);
+    }
+  }, [submitting, currentSectionIdx, answers]);
 
   useEffect(() => {
     fetch('/api/exam/status').then(r => r.json()).then(d => {
@@ -30,7 +59,6 @@ export default function ExamPage() {
     });
   }, [router]);
 
-  // Timer logic
   useEffect(() => {
     if (loading || statusData?.status === 'COMPLETED') return;
     
@@ -38,7 +66,7 @@ export default function ExamPage() {
       setTimeLeft((prev) => {
         if (prev <= 1) {
           clearInterval(interval);
-          handleNextSection(); // Auto-submit when time is up
+          handleNextSection();
           return 0;
         }
         return prev - 1;
@@ -46,40 +74,7 @@ export default function ExamPage() {
     }, 1000);
     
     return () => clearInterval(interval);
-  }, [loading, statusData?.status, currentSectionIdx]);
-
-  const handleNextSection = async () => {
-    if (submitting) return;
-    setSubmitting(true);
-    
-    const isLastSection = currentSectionIdx >= questionsDb.sections.length - 1;
-    
-    const payload = {
-      answers,
-      currentSectionIndex: isLastSection ? currentSectionIdx : currentSectionIdx + 1
-    };
-
-    if (isLastSection) {
-      // Final Submit
-      await fetch('/api/exam/submit', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(payload)
-      });
-      window.location.reload();
-    } else {
-      // Save progress and go to next section
-      await fetch('/api/exam/status', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(payload)
-      });
-      setCurrentSectionIdx(prev => prev + 1);
-      setTimeLeft(40 * 60); // Reset timer to 40 min
-      setSubmitting(false);
-      window.scrollTo(0, 0);
-    }
-  };
+  }, [loading, statusData?.status, handleNextSection]);
 
   const handleOptionSelect = (qId: string, val: string) => {
     setAnswers(prev => ({ ...prev, [qId]: val }));
@@ -113,7 +108,6 @@ export default function ExamPage() {
 
   return (
     <div className="flex-1 flex flex-col bg-[#050505]">
-      {/* Header */}
       <header className="sticky top-0 z-50 bg-slate-950/80 backdrop-blur-lg border-b border-slate-800 px-6 py-4 flex justify-between items-center">
         <div className="flex items-center gap-3">
           <Shield className="text-cyan-500 w-6 h-6" />
@@ -134,7 +128,6 @@ export default function ExamPage() {
         </div>
       </header>
 
-      {/* Main Content */}
       <main className="flex-1 overflow-y-auto p-4 sm:p-8">
         <div className="max-w-4xl mx-auto">
           <div className="mb-8 border-b border-slate-800 pb-4">
