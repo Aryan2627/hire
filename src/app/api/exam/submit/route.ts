@@ -3,6 +3,8 @@ import { getSession } from '@/lib/session';
 import { getCandidateResponse, updateCandidateResponse } from '@/lib/db';
 import questionsDb from '@/questions.json';
 
+export const dynamic = 'force-dynamic';
+
 export async function POST(request: Request) {
   const session = await getSession();
   if (!session) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
