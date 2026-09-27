@@ -1,0 +1,24 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = "file:./dev.db"
+}
+
+model Assessment {
+  id              String   @id @default(uuid())
+  candidateEmail  String   @unique
+  status          String   @default("PENDING") // PENDING, IN_PROGRESS, COMPLETED
+  
+  logicalScore    Int?
+  quantScore      Int?
+  aimlAnswer      String?
+  responses       String?  // Store raw JSON of their answers
+  
+  startedAt       DateTime?
+  completedAt     DateTime?
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+}
