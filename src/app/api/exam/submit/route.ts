@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server';
 import { getSession } from '@/lib/session';
-import { getCandidateResponse, updateCandidateResponse } from '@/lib/db';
+import { prisma } from '@/lib/prisma';
 import questionsDb from '@/questions.json';
 
 export const dynamic = 'force-dynamic';
@@ -26,14 +26,16 @@ export async function POST(request: Request) {
     });
   });
 
-  const finalData = {
-    ...data,
-    status: 'COMPLETED',
-    logicalScore,
-    quantScore,
-    completedAt: new Date().toISOString()
-  };
+  await prisma.candidateResponse.update({
+    where: { email },
+    data: {
+      status: 'COMPLETED',
+      logicalScore,
+      quantScore,
+      answers: JSON.stringify(answers),
+      completedAt: new Date()
+    }
+  });
 
-  updateCandidateResponse(email, finalData);
   return NextResponse.json({ success: true, message: 'Test submitted successfully.' });
 }
