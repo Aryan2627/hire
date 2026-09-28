@@ -3,15 +3,14 @@ generator client {
 }
 
 datasource db {
-  provider  = "postgresql"
-  url       = env("POSTGRES_PRISMA_URL") // Uses connection pooling
-  directUrl = env("POSTGRES_URL_NON_POOLING") // Uses a direct connection
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
 }
 
 model CandidateResponse {
   id                  String   @id @default(uuid())
   email               String   @unique
-  status              String   @default("PENDING") // PENDING, IN_PROGRESS, COMPLETED
+  status              String   @default("PENDING") // PENDING, IN_PROGRESS, COMPLETED, SUSPENDED
   currentSectionIndex Int      @default(0)
   answers             String?  // JSON stringified responses
   logicalScore        Int?
