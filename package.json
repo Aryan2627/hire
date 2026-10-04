@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "build": "node prebuild.js && prisma generate && (npx prisma db push --accept-data-loss || true) && next build",
+    "build": "node prebuild.js && prisma generate && next build",
     "start": "next start",
     "lint": "eslint",
     "postinstall": "node prebuild.js && prisma generate"
