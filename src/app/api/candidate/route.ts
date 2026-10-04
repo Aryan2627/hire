@@ -19,15 +19,46 @@ export async function POST(request: Request) {
         create: { email, name, phone, education, experience, status: 'PENDING', currentSectionIndex: 0 }
       });
     } catch (dbError: any) {
-      // If the error is about missing columns (because prisma db push wasn't run on Vercel), auto-patch the DB
-      console.log('Database missing columns, attempting auto-patch...', dbError.message);
+      console.log('Database missing columns or table, attempting auto-patch...', dbError.message);
+      
+      // Full table creation and alter just in case
       await prisma.$executeRawUnsafe(`
-        ALTER TABLE "CandidateResponse" 
-        ADD COLUMN IF NOT EXISTS "name" TEXT, 
-        ADD COLUMN IF NOT EXISTS "phone" TEXT, 
-        ADD COLUMN IF NOT EXISTS "education" TEXT, 
-        ADD COLUMN IF NOT EXISTS "experience" TEXT;
+        CREATE TABLE IF NOT EXISTS "CandidateResponse" (
+            "id" TEXT NOT NULL,
+            "email" TEXT NOT NULL,
+            "name" TEXT,
+            "phone" TEXT,
+            "education" TEXT,
+            "experience" TEXT,
+            "status" TEXT NOT NULL DEFAULT 'PENDING',
+            "currentSectionIndex" INTEGER NOT NULL DEFAULT 0,
+            "answers" TEXT,
+            "logicalScore" INTEGER,
+            "quantScore" INTEGER,
+            "completedAt" TIMESTAMP(3),
+            "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+            "updatedAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+            CONSTRAINT "CandidateResponse_pkey" PRIMARY KEY ("id")
+        );
       `);
+
+      try {
+        await prisma.$executeRawUnsafe(`CREATE UNIQUE INDEX "CandidateResponse_email_key" ON "CandidateResponse"("email");`);
+      } catch (e) {
+        // Index might already exist
+      }
+
+      try {
+        await prisma.$executeRawUnsafe(`
+          ALTER TABLE "CandidateResponse" 
+          ADD COLUMN IF NOT EXISTS "name" TEXT, 
+          ADD COLUMN IF NOT EXISTS "phone" TEXT, 
+          ADD COLUMN IF NOT EXISTS "education" TEXT, 
+          ADD COLUMN IF NOT EXISTS "experience" TEXT;
+        `);
+      } catch (e) {
+        // Ignore alter errors if it was just created
+      }
       
       // Retry the upsert after patching
       candidate = await prisma.candidateResponse.upsert({
@@ -43,6 +74,6 @@ export async function POST(request: Request) {
     return NextResponse.json({ success: true, candidate });
   } catch (err: any) {
     console.error('Registration Error:', err);
-    return NextResponse.json({ error: 'Internal Server Error' }, { status: 500 });
+    return NextResponse.json({ error: 'Internal Server Error: ' + (err.message || String(err)) }, { status: 500 });
   }
 }
