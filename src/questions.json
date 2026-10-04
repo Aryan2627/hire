@@ -2,46 +2,36 @@
   "sections": [
     {
       "id": "logical_reasoning",
-      "title": "Logical Reasoning",
+      "title": "Logical Reasoning (Advanced Level)",
       "durationMinutes": 40,
       "questions": [
-        { "id": "lr1", "text": "Look at this series: 2, 1, (1/2), (1/4)... What number should come next?", "options": ["(1/3)", "(1/8)", "(2/8)", "(1/16)"], "correct": "(1/8)" },
-        { "id": "lr2", "text": "SCD, TEF, UGH, ____, WKL", "options": ["CMN", "UJI", "VIJ", "IJT"], "correct": "VIJ" },
-        { "id": "lr3", "text": "If A is the brother of B; B is the sister of C; and C is the father of D, how D is related to A?", "options": ["Brother", "Sister", "Nephew", "Cannot be determined"], "correct": "Cannot be determined" },
-        { "id": "lr4", "text": "What is the missing number in the sequence: 4, 9, 16, 25, ?, 49", "options": ["36", "35", "30", "40"], "correct": "36" },
-        { "id": "lr5", "text": "Odometer is to mileage as compass is to:", "options": ["Speed", "Hiking", "Needle", "Direction"], "correct": "Direction" },
-        { "id": "lr6", "text": "Which word does NOT belong with the others?", "options": ["Parsley", "Basil", "Dill", "Mayonnaise"], "correct": "Mayonnaise" },
-        { "id": "lr7", "text": "If all Bloops are Razzies and all Razzies are Lazzies, then all Bloops are definitely Lazzies.", "options": ["True", "False", "Cannot be determined", "None of the above"], "correct": "True" },
-        { "id": "lr8", "text": "Window is to pane as book is to:", "options": ["Novel", "Glass", "Cover", "Page"], "correct": "Page" },
-        { "id": "lr9", "text": "Here are some words translated from an artificial language: gorblflur means fan belt. pixnflur means ceiling fan. arthtusl means tile roof. Which word could mean 'ceiling tile'?", "options": ["gorbltusl", "flurarth", "pixnarth", "arthflur"], "correct": "pixnarth" },
-        { "id": "lr10", "text": "Choose the odd one out:", "options": ["Apple", "Orange", "Tomato", "Potato"], "correct": "Potato" },
-        { "id": "lr11", "text": "If 1=3, 2=3, 3=5, 4=4, 5=4, then 6=?", "options": ["2", "3", "4", "5"], "correct": "3" },
-        { "id": "lr12", "text": "A man walks 5 km toward south and then turns to the right. After walking 3 km he turns to the left and walks 5 km. Now in which direction is he from the starting place?", "options": ["West", "South", "North-East", "South-West"], "correct": "South-West" },
-        { "id": "lr13", "text": "Pointing to a photograph of a boy Suresh said, 'He is the son of the only son of my mother.' How is Suresh related to that boy?", "options": ["Brother", "Uncle", "Cousin", "Father"], "correct": "Father" },
-        { "id": "lr14", "text": "Which number replaces the question mark? 3, 5, 9, 17, 33, ?", "options": ["55", "65", "66", "64"], "correct": "65" },
-        { "id": "lr15", "text": "If 'WHITE' is coded as 'XIJUF', what will be the code for 'BLACK'?", "options": ["CMBDL", "CMBCE", "CMAEL", "CMBEL"], "correct": "CMBDL" }
+        { "id": "lr1", "text": "Six people A, B, C, D, E, and F are sitting around a circular table facing the center. A sits second to the left of C. D sits immediately to the right of B. F is not sitting next to A or D. Who sits exactly between C and F?", "options": ["A", "B", "E", "None of these"], "correct": "E" },
+        { "id": "lr2", "text": "Statement 1: All inputs are outputs. Statement 2: Some outputs are processors. Statement 3: No processor is a memory. Conclusion: I. Some memories being inputs is a possibility. II. Some outputs are definitely not memories.", "options": ["Only I follows", "Only II follows", "Both I and II follow", "Neither follows"], "correct": "Both I and II follow" },
+        { "id": "lr3", "text": "In a certain code language, 'ROBUST' is written as 'QNATRS'. How will 'ZXCMPQ' be written in that language?", "options": ["YWBLOP", "YYBNOO", "AWBLOP", "Cannot be determined"], "correct": "YWBLOP" },
+        { "id": "lr4", "text": "If A + B means A is the husband of B; A - B means A is the sister of B; A * B means A is the mother of B. Which of the following shows that P is the maternal aunt of Q?", "options": ["P - R * Q", "P + R * Q", "P * R - Q", "P - R + Q"], "correct": "P - R * Q" },
+        { "id": "lr5", "text": "A clock is set right at 5 AM. The clock loses 16 minutes in 24 hours. What will be the true time when the clock indicates 10 PM on 4th day?", "options": ["11 PM", "10:45 PM", "11:15 PM", "12 Midnight"], "correct": "11 PM" },
+        { "id": "lr6", "text": "Five tasks T1, T2, T3, T4, and T5 must be scheduled in a single sequence. T3 must be scheduled before T5. T2 must be scheduled after T4. If T1 is scheduled third, what is the maximum number of positions T2 could occupy?", "options": ["1", "2", "3", "4"], "correct": "2" },
+        { "id": "lr7", "text": "Find the next term in the series: 3, 10, 29, 66, 127, ?", "options": ["218", "198", "216", "224"], "correct": "218" },
+        { "id": "lr8", "text": "There are 5 houses of 5 different colors. In each house lives a person of a different nationality. The 5 owners drink a certain type of beverage, smoke a certain brand of cigar, and keep a certain pet. If the Brit lives in the red house, and the Swede keeps dogs, how many variables can instantly be mapped given 10 independent clues of equality?", "options": ["Exactly 10", "At most 10", "Depends on the intersections", "Always 5"], "correct": "Depends on the intersections" },
+        { "id": "lr9", "text": "Which combination of symbols must replace the question marks in the given expression to make it strictly true: P ? Q ? R ? S ? T (Given: P > T is definitively true)", "options": ["=, >, >=, = ", ">, =, <, <", ">=, =, >, <", "None of these"], "correct": "=, >, >=, = " },
+        { "id": "lr10", "text": "A cube is painted red on two adjacent faces, blue on the opposite faces of the red faces, and green on the remaining faces. It is then cut into 64 smaller identical cubes. How many small cubes have exactly one face painted blue?", "options": ["8", "12", "16", "24"], "correct": "8" }
       ]
     },
     {
       "id": "quant",
-      "title": "Quantitative Aptitude",
+      "title": "Quantitative Aptitude (Advanced Level)",
       "durationMinutes": 40,
       "questions": [
-        { "id": "q1", "text": "The sum of ages of 5 children born at the intervals of 3 years each is 50 years. What is the age of the youngest child?", "options": ["4 years", "8 years", "10 years", "None of these"], "correct": "4 years" },
-        { "id": "q2", "text": "A train running at the speed of 60 km/hr crosses a pole in 9 seconds. What is the length of the train?", "options": ["120 metres", "180 metres", "324 metres", "150 metres"], "correct": "150 metres" },
-        { "id": "q3", "text": "A takes twice as much time as B or thrice as much time as C to finish a piece of work. Working together, they can finish the work in 2 days. B can do the work alone in:", "options": ["4 days", "6 days", "8 days", "12 days"], "correct": "6 days" },
-        { "id": "q4", "text": "Two numbers are respectively 20% and 50% more than a third number. The ratio of the two numbers is:", "options": ["2:5", "3:5", "4:5", "6:7"], "correct": "4:5" },
-        { "id": "q5", "text": "A sum of money at simple interest amounts to Rs. 815 in 3 years and to Rs. 854 in 4 years. The sum is:", "options": ["Rs. 650", "Rs. 690", "Rs. 698", "Rs. 700"], "correct": "Rs. 698" },
-        { "id": "q6", "text": "What percentage of numbers from 1 to 70 have 1 or 9 in the unit's digit?", "options": ["1", "14", "20", "21"], "correct": "20" },
-        { "id": "q7", "text": "If 20% of a = b, then b% of 20 is the same as:", "options": ["4% of a", "5% of a", "20% of a", "None of these"], "correct": "4% of a" },
-        { "id": "q8", "text": "Find the greatest number that will divide 43, 91 and 183 so as to leave the same remainder in each case.", "options": ["4", "7", "9", "13"], "correct": "4" },
-        { "id": "q9", "text": "Which of the following is a prime number?", "options": ["33", "81", "93", "97"], "correct": "97" },
-        { "id": "q10", "text": "The sum of the digits of a two-digit number is 15 and the difference between the digits is 3. What is the two-digit number?", "options": ["69", "78", "96", "Cannot be determined"], "correct": "Cannot be determined" },
-        { "id": "q11", "text": "If log 2 = 0.3010 and log 3 = 0.4771, the value of log 5 512 is:", "options": ["2.870", "2.967", "3.876", "3.912"], "correct": "3.876" },
-        { "id": "q12", "text": "In a 100 m race, A covers the distance in 36 seconds and B in 45 seconds. In this race A beats B by:", "options": ["20 m", "25 m", "22.5 m", "9 m"], "correct": "20 m" },
-        { "id": "q13", "text": "A boat can travel with a speed of 13 km/hr in still water. If the speed of the stream is 4 km/hr, find the time taken by the boat to go 68 km downstream.", "options": ["2 hours", "3 hours", "4 hours", "5 hours"], "correct": "4 hours" },
-        { "id": "q14", "text": "A shopkeeper sells some articles at Rs. 35 and earns 40% profit. What will be the cost price?", "options": ["Rs. 25", "Rs. 22", "Rs. 20", "Rs. 30"], "correct": "Rs. 25" },
-        { "id": "q15", "text": "Evaluate (0.04)^-1.5", "options": ["25", "125", "250", "625"], "correct": "125" }
+        { "id": "q1", "text": "A dishonest dealer marks up his goods by 20% and gives a discount of 10%. Besides, he uses a faulty balance which reads 1 kg for 800 grams. What is his net profit percentage?", "options": ["35%", "25%", "45%", "50%"], "correct": "35%" },
+        { "id": "q2", "text": "Two runners A and B start running simultaneously from the same point on a circular track of length 1200m in opposite directions. A's speed is 20 m/s and B's speed is 30 m/s. After how much time will they meet for the third time?", "options": ["72 seconds", "120 seconds", "144 seconds", "216 seconds"], "correct": "72 seconds" },
+        { "id": "q3", "text": "In a bag containing 4 white, 5 red, and 6 blue balls, 3 balls are drawn at random. What is the probability that all of them are of the same color?", "options": ["34/455", "3/91", "2/91", "34/91"], "correct": "34/455" },
+        { "id": "q4", "text": "Find the remainder when 3^2023 is divided by 7.", "options": ["1", "2", "3", "5"], "correct": "3" },
+        { "id": "q5", "text": "A solid metallic cone of radius 12 cm and height 24 cm is melted to form a solid sphere. Find the surface area of the sphere in terms of pi.", "options": ["144 pi", "576 pi", "288 pi", "324 pi"], "correct": "576 pi" },
+        { "id": "q6", "text": "The number of ways in which 8 distinct toys can be distributed among 3 children such that every child gets at least one toy is:", "options": ["5796", "5840", "5798", "None of these"], "correct": "5796" },
+        { "id": "q7", "text": "P and Q can complete a project in 20 days and 30 days respectively. P starts the work alone. After every 3 days, Q joins him for exactly 1 day. In how many days will the work be completed?", "options": ["24 days", "22.5 days", "23 days", "25 days"], "correct": "24 days" },
+        { "id": "q8", "text": "What is the maximum value of f(x) = -2x^2 + 12x - 7?", "options": ["11", "7", "5", "9"], "correct": "11" },
+        { "id": "q9", "text": "In triangle ABC, AB = 13, BC = 14, and CA = 15. A point D lies on BC such that AD is perpendicular to BC. Find the length of AD.", "options": ["10", "11", "12", "13"], "correct": "12" },
+        { "id": "q10", "text": "The sum of an infinite geometric progression is 4, and the sum of the cubes of its terms is 192. What is the common ratio of the progression?", "options": ["1/2", "-1/2", "1/4", "-1/4"], "correct": "-1/2" }
       ]
     },
     {

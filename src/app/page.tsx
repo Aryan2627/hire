@@ -67,7 +67,7 @@ export default function LoginPage() {
       });
 
       if (res.ok) {
-        router.push('/exam');
+        router.push('/onboarding');
       } else {
         const data = await res.json();
         setError(data.error || 'Invalid credentials');
@@ -149,11 +149,11 @@ export default function LoginPage() {
         {/* Login Form */}
         <form onSubmit={handleLogin} className="space-y-5">
           <div>
-            <label className="block text-sm font-semibold text-slate-700 mb-2">Email Address</label>
+            <label className="block text-sm font-semibold text-slate-700 mb-2">Common Access ID</label>
             <div className="relative group">
               <Mail className={`absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 transition-colors ${isFormDisabled ? 'text-slate-300' : 'text-slate-400 group-focus-within:text-blue-500'}`} />
               <input 
-                type="email" 
+                type="text" 
                 required 
                 disabled={isFormDisabled}
                 value={email}
@@ -163,18 +163,18 @@ export default function LoginPage() {
                     ? 'bg-slate-50 border-slate-200 text-slate-400 cursor-not-allowed' 
                     : 'bg-white border-slate-200 text-slate-900 hover:border-blue-300 focus:border-blue-500 focus:ring-4 focus:ring-blue-500/10'
                 }`}
-                placeholder="candidate@example.com"
+                placeholder="candidate"
               />
             </div>
           </div>
 
           <div>
-            <label className="block text-sm font-semibold text-slate-700 mb-2">Access Code</label>
+            <label className="block text-sm font-semibold text-slate-700 mb-2">Access Password</label>
             <div className="relative group">
               <Lock className={`absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 transition-colors ${isFormDisabled ? 'text-slate-300' : 'text-slate-400 group-focus-within:text-blue-500'}`} />
               <input 
                 type="password" 
-                required 
+                required
                 disabled={isFormDisabled}
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}

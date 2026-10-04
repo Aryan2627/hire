@@ -10,6 +10,10 @@ datasource db {
 model CandidateResponse {
   id                  String   @id @default(uuid())
   email               String   @unique
+  name                String?
+  phone               String?
+  education           String?
+  experience          String?
   status              String   @default("PENDING") // PENDING, IN_PROGRESS, COMPLETED, SUSPENDED
   currentSectionIndex Int      @default(0)
   answers             String?  // JSON stringified responses
