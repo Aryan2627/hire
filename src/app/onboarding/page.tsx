@@ -42,7 +42,18 @@ export default function OnboardingPage() {
   return (
     <div className="min-h-screen bg-slate-50 flex flex-col items-center justify-center p-4">
       <div className="w-full max-w-xl bg-white p-8 rounded-2xl shadow-xl border border-slate-100">
-        <h1 className="text-2xl font-bold text-slate-900 mb-2">Candidate Registration</h1>
+        <div className="flex justify-between items-center mb-2">
+          <h1 className="text-2xl font-bold text-slate-900">Candidate Registration</h1>
+          <button 
+            onClick={async () => {
+              await fetch('/api/auth/logout', { method: 'POST' });
+              router.push('/');
+            }}
+            className="text-sm text-red-600 hover:text-red-700 font-medium"
+          >
+            Restart / Logout
+          </button>
+        </div>
         <p className="text-slate-500 mb-6">Please enter your details before starting the assessment.</p>
 
         {error && <div className="mb-6 p-4 bg-red-50 text-red-600 rounded-lg text-sm">{error}</div>}
