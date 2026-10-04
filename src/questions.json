@@ -2,7 +2,7 @@
   "sections": [
     {
       "id": "logical_reasoning",
-      "title": "Logical Reasoning (Advanced Level)",
+      "title": "Logical Reasoning",
       "durationMinutes": 20,
       "questions": [
         { "id": "lr1", "text": "Six people A, B, C, D, E, and F are sitting around a circular table facing the center. A sits second to the left of C. D sits immediately to the right of B. F is not sitting next to A or D. Who sits exactly between C and F?", "options": ["A", "B", "E", "None of these"], "correct": "E" },
@@ -19,7 +19,7 @@
     },
     {
       "id": "quant",
-      "title": "Quantitative Aptitude (Advanced Level)",
+      "title": "Quantitative Aptitude",
       "durationMinutes": 20,
       "questions": [
         { "id": "q1", "text": "A dishonest dealer marks up his goods by 20% and gives a discount of 10%. Besides, he uses a faulty balance which reads 1 kg for 800 grams. What is his net profit percentage?", "options": ["35%", "25%", "45%", "50%"], "correct": "35%" },
