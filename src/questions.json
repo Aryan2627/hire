@@ -3,7 +3,7 @@
     {
       "id": "logical_reasoning",
       "title": "Logical Reasoning (Advanced Level)",
-      "durationMinutes": 40,
+      "durationMinutes": 20,
       "questions": [
         { "id": "lr1", "text": "Six people A, B, C, D, E, and F are sitting around a circular table facing the center. A sits second to the left of C. D sits immediately to the right of B. F is not sitting next to A or D. Who sits exactly between C and F?", "options": ["A", "B", "E", "None of these"], "correct": "E" },
         { "id": "lr2", "text": "Statement 1: All inputs are outputs. Statement 2: Some outputs are processors. Statement 3: No processor is a memory. Conclusion: I. Some memories being inputs is a possibility. II. Some outputs are definitely not memories.", "options": ["Only I follows", "Only II follows", "Both I and II follow", "Neither follows"], "correct": "Both I and II follow" },
@@ -20,7 +20,7 @@
     {
       "id": "quant",
       "title": "Quantitative Aptitude (Advanced Level)",
-      "durationMinutes": 40,
+      "durationMinutes": 20,
       "questions": [
         { "id": "q1", "text": "A dishonest dealer marks up his goods by 20% and gives a discount of 10%. Besides, he uses a faulty balance which reads 1 kg for 800 grams. What is his net profit percentage?", "options": ["35%", "25%", "45%", "50%"], "correct": "35%" },
         { "id": "q2", "text": "Two runners A and B start running simultaneously from the same point on a circular track of length 1200m in opposite directions. A's speed is 20 m/s and B's speed is 30 m/s. After how much time will they meet for the third time?", "options": ["72 seconds", "120 seconds", "144 seconds", "216 seconds"], "correct": "72 seconds" },

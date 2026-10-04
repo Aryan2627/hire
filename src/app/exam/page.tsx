@@ -12,7 +12,7 @@ export default function ExamPage() {
   const [submitting, setSubmitting] = useState(false);
   const [currentSectionIdx, setCurrentSectionIdx] = useState(0);
   const [answers, setAnswers] = useState<Record<string, string>>({});
-  const [timeLeft, setTimeLeft] = useState<number>(40 * 60);
+  const [timeLeft, setTimeLeft] = useState<number>(questionsDb.sections[0].durationMinutes * 60);
   const [warnings, setWarnings] = useState(0);
 
   const answersRef = useRef(answers);
@@ -47,8 +47,9 @@ export default function ExamPage() {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(payload)
       });
-      setCurrentSectionIdx(prev => prev + 1);
-      setTimeLeft(40 * 60);
+      const nextIdx = currentSectionIdx + 1;
+      setCurrentSectionIdx(nextIdx);
+      setTimeLeft(questionsDb.sections[nextIdx].durationMinutes * 60);
       setSubmitting(false);
       window.scrollTo(0, 0);
     }
@@ -75,7 +76,9 @@ export default function ExamPage() {
       })
       .then(d => {
         setStatusData(d);
-        setCurrentSectionIdx(d.currentSectionIndex || 0);
+        const idx = d.currentSectionIndex || 0;
+        setCurrentSectionIdx(idx);
+        setTimeLeft(questionsDb.sections[idx].durationMinutes * 60);
         setAnswers(d.answers || {});
         setLoading(false);
       })
